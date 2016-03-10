@@ -1,0 +1,22 @@
+{
+  "name": "mobilecloudserver",
+  "version": "0.0.1",
+  "description": "Mobile cloud server for image compression offloading",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dlimbu/mobileCloudServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dlimbu/mobileCloudServer/issues"
+  },
+  "homepage": "https://github.com/dlimbu/mobileCloudServer#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
