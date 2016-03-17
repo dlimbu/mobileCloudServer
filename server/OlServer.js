@@ -9,7 +9,7 @@ var OlServer = function (options) {
 };
 
 OlServer.prototype.get = function (resource) {
-   this._sInst.get(resource, function (req, res) {
+   this._sInst.get('/', function (req, res) {
       res.writeHead(200, {
          'content-Type' : 'text/plain'
       });
