@@ -9,10 +9,12 @@ var OlServer = function (options) {
 };
 
 OlServer.prototype.getReqEndPoint = function (options) {
+   console.log("Ol server GET");
    this._sInst.get('/', function (req, res) {
-      res.writeHead(200, {
-         'content-Type' : 'text/plain'
-      });
+      console.log("Ol server GET received");
+//      res.writeHead(200, {
+//         'content-Type' : 'text/plain'
+//      });
       res.send('Welcome to Offload Server!')
    });
 };
