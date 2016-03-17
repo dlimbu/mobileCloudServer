@@ -8,21 +8,20 @@ var OlServer = function (options) {
    this._sInst = express();
 };
 
-OlServer.prototype.get = function (resource) {
+OlServer.prototype.getReqEndPoint = function (options) {
    this._sInst.get('/', function (req, res) {
       res.writeHead(200, {
          'content-Type' : 'text/plain'
       });
-      res.send('Welcome to Offload Server!');
-
+      res.send('Welcome to Offload Server!')
    });
 };
 
 /**
  *
- * @param resource
+ * @param options
  */
-OlServer.prototype.post = function (resource) {
+OlServer.prototype.postReqEndPoint = function (options) {
    this._sInst.post(resource, function (req, res) {
       res.send('Got a POST request');
    });

@@ -5,5 +5,7 @@
 var OlServer = require('./OlServer').OlServer;
 
 var olServer = new OlServer();
-olServer.start(8080);
+olServer.getReqEndPoint();
+olServer.postReqEndPoint();
 
+olServer.start(8080);
