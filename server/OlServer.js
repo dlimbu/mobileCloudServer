@@ -13,7 +13,7 @@ OlServer.prototype.get = function (resource) {
       res.writeHead(200, {
          'content-Type' : 'text/plain'
       });
-      res.end('Welcome to Offload Server!');
+      res.send('Welcome to Offload Server!');
 
    });
 };
