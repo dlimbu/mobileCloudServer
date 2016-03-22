@@ -14,21 +14,44 @@ var OlServer = function (options) {
 };
 
 OlServer.prototype.getReqEndPoint = function (options) {
-   console.log("Ol server GET");
    var _self = this;
 
    this._sInst.get('/', function (req, res) {
+      console.log("get received calling transcode");
 
-      _self._tAdapter.getName(function (result) {
+      _self._tAdapter.openFD(function (result) {
 
-         console.log("From JVM: "+result);
-         console.log("Ol server GET received" );
+         console.log("openFd() callback");
 
-         res.send('Welcome to Offload Server!')
+//         _self._tAdapter.transcode("", function (result) {
+            console.log("From JVM: "+ result);
+            console.log("Ol server GET received" );
 
-      }.bind(this));
+            res.send('Welcome to Offload Server!')
+//         });
+      });
+   }.bind(this));
 
-   });
+//   this._sInst.get('/', function (req, res) {
+//      console.log("get received calling transcode");
+//      _self._tAdapter.transcode("./xLarge.png", function (result) {
+//
+//         console.log("From JVM: "+ result);
+//         console.log("Ol server GET received" );
+//
+//         res.send('Welcome to Offload Server!')
+//
+//      }.bind(this));
+//      _self._tAdapter.getName(function (result) {
+//
+//         console.log("From JVM: "+result);
+//         console.log("Ol server GET received" );
+//
+//         res.send('Welcome to Offload Server!')
+//
+//      }.bind(this));
+
+//   });
 };
 
 /**
