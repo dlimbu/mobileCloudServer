@@ -35,7 +35,7 @@ TranscoderAdapter.prototype.transcode = function (fileName, format, toFormat, cb
    if(!cbfn) {
       throw Error("Invalid parameter, cbFn required");
    }
-   self._inst.muxSync("../myJava/", fileName, format, toFormat);
+   this._inst.muxSync("../myJava/", fileName, format, toFormat);
    cbfn();
 };
 

@@ -17,8 +17,11 @@ OlServer.prototype.getReqEndPoint = function (options) {
    var _self = this;
    this._sInst.get('/', function (req, res) {
       console.log("get received calling transcode");
-      _self._tAdapter.transcode("large", "jpg", "png",function (result) {
-         res.send('Welcome to Offload Server!')
+      var t = Date.now();
+       _self._tAdapter.transcode("xLarge", "jpg", "png",function (result) {
+	var e = Date.now();
+	var elapsed = e-t;
+         res.send('Welcome to Offload Server! duration transcoding: '+ elapsed)
       }.bind(this));
    });
 };
