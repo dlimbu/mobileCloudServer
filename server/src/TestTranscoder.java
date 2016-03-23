@@ -39,6 +39,10 @@ public class TestTranscoder {
 
     private File mFile;
 
+    public TestTranscoder () {
+
+    }
+
     public String getName () {
         return "TestTranscoder";
     }
@@ -61,6 +65,14 @@ public class TestTranscoder {
 
     public boolean getUseCache() {
         return ImageIO.getUseCache();
+    }
+
+    public void loadImage () throws IOException {
+        mImageBuffer = ImageIO.read(mFile);
+    }
+
+    public void transcode(String type) throws IOException {
+        ImageIO.write(mImageBuffer, type, new File(mPath + mCurrImg + "." + type));
     }
 
     public void scale (int height, aspectRatio ar) {
