@@ -8,14 +8,14 @@ import java.util.ArrayList;
 
 public class TestTranscoder {
 
-    private enum ASPECT_RATIO {
+    private enum aspectRatio {
         LAND_SCAPE(1.78),
 
         PORTRAIT(1.33);
 
         private double mFactor;
 
-        ASPECT_RATIO (double factor) {
+        aspectRatio (double factor) {
             mFactor = factor;
         }
 
@@ -39,79 +39,45 @@ public class TestTranscoder {
 
     private File mFile;
 
-    public TestTranscoder () {
-
-    }
-
-    public static String test () {
-        ArrayList <String>l = new ArrayList<String>();
-        l.add("Name");
-        l.add("test");
-
-        return "Hello Test";
-    }
-
-    public File getFile() {
-        return mFile;
-    }
-
     public String getName () {
         return "TestTranscoder";
     }
 
-    public void mux (String path, String imgName, String type, String toType) throws IOException {
-        this.openFD(path, imgName, type);
-        this.loadImage();
-        this.transcode(toType);
-    }
-
-    public void openFD (String path, String imgName, String type) throws IOException{
+    private void openFD (String path, String imgName, String type) throws IOException{
         mPath = path;
         mCurrImg = imgName;
         mFile = new File(mPath + mCurrImg + "."+type);
     }
 
-    public File getFile(String path, String imgName, String type) throws IOException{
-        mPath = path;
-        mCurrImg = imgName;
-       return  new File(mPath + mCurrImg + "."+type);
+    public void mux (String path, String imgName, String type, String toType) throws IOException {
+        this.openFD(path, imgName, type);
+        BufferedImage iBuff = ImageIO.read(mFile);
+        ImageIO.write(iBuff, type, new File(mPath + mCurrImg + "." + toType));
     }
 
     public String getFilePath () throws IOException{
         return mFile.getCanonicalPath();
     }
 
-    public String [] getReaderMimeTypes () {
-        return ImageIO.getReaderMIMETypes();
-    }
-
     public boolean getUseCache() {
         return ImageIO.getUseCache();
     }
 
-    public void loadImage () throws IOException {
-        mImageBuffer = ImageIO.read(mFile);
-    }
-
-    public void transcode(String type) throws IOException {
-        ImageIO.write(mImageBuffer, type, new File(mPath + mCurrImg + "." + type));
-    }
-
-    public void scale (int height, ASPECT_RATIO aspectRatio) {
+    public void scale (int height, aspectRatio ar) {
 
         int currHeight = mImageBuffer.getHeight();
         if (height > currHeight) {
            throw new RuntimeException("Scaling up not supported");
         }
 
-        mImageScaleBuffer = new BufferedImage(height, aspectRatio.getWidth(height), mImageBuffer.getType());
+        mImageScaleBuffer = new BufferedImage(height, ar.getWidth(height), mImageBuffer.getType());
         Graphics2D g = mImageScaleBuffer.createGraphics();
 
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         g.drawImage(mImageBuffer, 0, 0,
-                height, aspectRatio.getWidth(height),
+                height, ar.getWidth(height),
                 0 , 0,
                 mImageBuffer.getWidth(), height,
                 null);
@@ -142,19 +108,6 @@ public class TestTranscoder {
     }
 
     public void runMult (int sampleSize) throws IOException {
-        ///Users/Dlimbu/Sites/mobileCloudServer/server/xLarge.jpg
-//        this.loadImage("img/","xLarge","jpg");
-//        this.run(sampleSize);
-        System.out.println(System.getProperty("user.dir"));
-        this.openFD("../../mobileCloudServer/server/","xLarge","jpg");
-//        mux("../mobileCloudServer/server/","xLarge","jpg", "png");
-        System.out.println("path: "+ this.getFilePath());
-        this.loadImage();
-//        System.out.println("Going to run smaple");
-        this.run(sampleSize);
-
-//        this.loadImage("Users/Dlimbu/Sites/mobileCloudServer/server/","xLarge","jpg");
-//        this.run(sampleSize);
     }
 
     public void runScaleMult () throws IOException{
@@ -163,7 +116,7 @@ public class TestTranscoder {
         this.transcode("png");
 
         long st = System.currentTimeMillis();
-        this.scale(350, ASPECT_RATIO.LAND_SCAPE);
+        this.scale(350, aspectRatio.LAND_SCAPE);
         long d = System.currentTimeMillis() - st;
         this.transcode("png");
         System.out.println("Scale image "+this.mCurrImg +" to landscape: " + d );
