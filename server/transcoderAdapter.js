@@ -77,8 +77,13 @@ TranscoderAdapter.prototype.openFD = function (cbFn) {
    var file = self._inst.getFileSync();
 
    console.log("Got the file descriptor");
-   var imageBuffer =_JVM.callStaticMethodSync("javax.imageio.ImageIO", "read", file);
-
+//   var imageBuffer =_JVM.callStaticMethodSync("javax.imageio.ImageIO", "read", file);
+	
+  // var nFile = self._inst.getFile(".","myLarge", "png");
+   //if (!nFile) {
+//	console.log("File is undefined");
+//}
+  // var transcode = _JVM.callStaticMethodSync("javax.imageio.ImageIO", "write", imageBuffer, "png", nFile);
 
    console.log("Done calling read !!!!");
 
@@ -88,13 +93,13 @@ TranscoderAdapter.prototype.openFD = function (cbFn) {
 
    console.log("calling loadImageSync ..");
 //   try {
-//      self._inst.loadImageSync();
+    self._inst.loadImageSync();
 //   } catch (ex) {
 //      console.log("calling loadImageSync ..", ex);
 //   }
-
-   console.log("calling transcodeSync ..");
+	
    self._inst.transcodeSync("png");
+   console.log("calling transcodeSync ..");
 
    cbFn();
 

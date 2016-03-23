@@ -71,6 +71,12 @@ public class TestTranscoder {
         mFile = new File(mPath + mCurrImg + "."+type);
     }
 
+    public File getFile(String path, String imgName, String type) throws IOException{
+        mPath = path;
+        mCurrImg = imgName;
+       return  new File(mPath + mCurrImg + "."+type);
+    }
+
     public String getFilePath () throws IOException{
         return mFile.getCanonicalPath();
     }
@@ -85,8 +91,6 @@ public class TestTranscoder {
 
     public void loadImage () throws IOException {
         mImageBuffer = ImageIO.read(mFile);
-
-        throw new IOException("Done loadImage() done returning Exception ....... ");
     }
 
     public void transcode(String type) throws IOException {
