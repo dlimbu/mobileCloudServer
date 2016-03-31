@@ -11,9 +11,11 @@ ImageMagickAdapter.prototype.transcode = function (fileName, format, toFormat, c
    if(!cbfn) {
       throw Error("Invalid parameter, cbFn required");
    }
-
-   exec("convert ../myJava/"+ fileName +"." + format +
-      "../myJava/"+fileName+"."+toFormat, function (error, stdout, stderr) {
+	
+   var cmd = "convert ../myJava/"+ fileName +"." + format +
+      " ../myJava/"+fileName+"."+toFormat;
+   console.log("command line exec: " + cmd);
+   exec(cmd ,function (error, stdout, stderr) {
    });
 
    cbfn();
