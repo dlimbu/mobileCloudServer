@@ -4,13 +4,11 @@
 
 var express = require('express');
 var TranscoderAdapter = require('./transcoderAdapter').TranscoderAdapter;
-
+var ImageMagickAdapter = require('./imageMagickAdapter').ImageMagickAdapter;
 
 var OlServer = function (options) {
    this._sInst = express();
-   console.log("TranscoderAdapter class: ", TranscoderAdapter);
-   this._tAdapter = new TranscoderAdapter();
-   this._tAdapter.startJVM();
+   this._tAdapter = new ImageMagickAdapter();
 };
 
 OlServer.prototype.getReqEndPoint = function (options) {
@@ -18,10 +16,9 @@ OlServer.prototype.getReqEndPoint = function (options) {
    this._sInst.get('/', function (req, res) {
       console.log("get received calling transcode");
       var t = Date.now();
-       _self._tAdapter.transcode("xLarge", "jpg", "png",function (result) {
-	var e = Date.now();
-	var elapsed = e-t;
-         res.send('Welcome to Offload Server! duration transcoding: '+ elapsed)
+      _self._tAdapter.transcode("mirage", "png", "jpg", function (result) {
+         var elapsed = Date.now() - t;
+         res.send('Welcome to Offload Server! duration transcoding (MS): '+ elapsed)
       }.bind(this));
    });
 };
