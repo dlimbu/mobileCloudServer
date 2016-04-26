@@ -29,7 +29,8 @@ OlServer.prototype.getReqEndPoint = function (options) {
  */
 OlServer.prototype.postReqEndPoint = function (options) {
    this._sInst.post('/', function (req, res) {
-      res.send('Got a POST request');
+      	console.log("POST", req.url);
+	res.send('Got a POST request');
    });
 };
 
