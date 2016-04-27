@@ -3,7 +3,7 @@
  */
 
 var express = require('express');
-var TranscoderAdapter = require('./transcoderAdapter').TranscoderAdapter;
+//var TranscoderAdapter = require('./transcoderAdapter').TranscoderAdapter;
 var ImageMagickAdapter = require('./imageMagickAdapter').ImageMagickAdapter;
 var morphType = require('./imageMagickAdapter').morphType;
 
@@ -48,6 +48,7 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
       _self._tAdapter.morph(morphType.DILATE, inFile, outFile, function () {
          var elapsed = Date.now() - t;
          console.log("sending file: " + (__dirname +"/"+ outFile));
+	 console.log("Morph dilate duration(ms): "+ elapsed);
          res.sendFile(__dirname +"/"+ outFile)
       });
    });
