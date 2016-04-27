@@ -20,7 +20,7 @@ OlServer.prototype.init = function () {
    this._sInst.use(bp.urlencoded({extended:true}));
 };
 
-OlServer.prototype.getReqEndPoint = function (options) {
+OlServer.prototype.transcodeEndpoint = function (options) {
    var _self = this;
    this._sInst.get('/', function (req, res) {
       console.log("get received calling transcode");
@@ -29,6 +29,14 @@ OlServer.prototype.getReqEndPoint = function (options) {
          var elapsed = Date.now() - t;
          res.send('Welcome to Offload Server! duration transcoding (MS): '+ elapsed)
       }.bind(this));
+   });
+};
+
+OlServer.prototype.morphOutEndpoint = function (options) {
+   var _self = this;
+   this._sInst.get('/morph/morphOut.jpg', function (req, res) {
+      var outFile = "morphOut.jpg";
+      res.sendFile(__dirname +"/"+ outFile)
    });
 };
 
