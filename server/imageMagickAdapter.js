@@ -16,9 +16,44 @@ ImageMagickAdapter.prototype.transcode = function (fileName, format, toFormat, c
       " ../myJava/"+fileName+"."+toFormat;
    console.log("command line exec: " + cmd);
    exec(cmd ,function (error, stdout, stderr) {
+      cbfn();
    });
+};
+
+ImageMagickAdapter.prototype.morph = function (type, inFile, outFile, cbfn) {
+   if(!cbfn) {
+      throw Error("Invalid parameter, cbFn required");
+   }
+
+   var cmd;
+   switch(type) {
+      case morphType.DILATE:
+         cmd = "convert " + inFile + " -morphology Dilate Octagon:3 "+ outFile;
+         break;
+      case morphType.ERODE:
+      case morphType.EDGE:
+   }
+
+   console.log("command line exec: " + cmd);
+
+   exec(cmd ,function (error, stdout, stderr) {
+      cbfn();
+   });
+};
+
+ImageMagickAdapter.prototype.transform = function (type, inFile, outFile, cbfn) {
+   if(!cbfn) {
+      throw Error("Invalid parameter, cbFn required");
+   }
 
    cbfn();
 };
 
+var morphType = {
+   DILATE: "dilate",
+   ERODE: "erode",
+   EDGE: "edge"
+};
+
+exports.morphType = morphType;
 exports.ImageMagickAdapter = ImageMagickAdapter;

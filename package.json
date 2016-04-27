@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/dlimbu/mobileCloudServer#readme",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "nan": "^2.2.1"
   },
-   "gypfile": true
+  "gypfile": true
 }

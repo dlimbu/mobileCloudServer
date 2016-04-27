@@ -6,6 +6,7 @@
 //console.log("NativeHello: " + nativeHello.hello());
 var OlServer = require('./olServer').OlServer;
 var olServer = new OlServer();
+olServer.init();
 olServer.getReqEndPoint();
-olServer.postReqEndPoint();
+olServer.morphDilateEndPoint();
 olServer.start(8080);
