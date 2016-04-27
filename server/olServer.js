@@ -48,6 +48,7 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
       _self._tAdapter.morph(morphType.DILATE, inFile, outFile, function () {
          var elapsed = Date.now() - t;
          console.log("sending file: " + (__dirname +"/"+ outFile));
+         console.log("Morph dilate duration(ms): " + elapsed);
          res.sendFile(__dirname +"/"+ outFile)
       });
    });
