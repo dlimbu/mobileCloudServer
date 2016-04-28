@@ -27,6 +27,7 @@ OlServer.prototype.transcodeEndpoint = function (options) {
       var t = Date.now();
       _self._tAdapter.transcode("mirage", "png", "jpg", function (result) {
          var elapsed = Date.now() - t;
+         res.statusCode = 200;
          res.send('Welcome to Offload Server! duration transcoding (MS): '+ elapsed)
       }.bind(this));
    });
@@ -34,8 +35,9 @@ OlServer.prototype.transcodeEndpoint = function (options) {
 
 OlServer.prototype.morphOutEndpoint = function (options) {
    var _self = this;
-   this._sInst.get('/morph/morphOut.jpg', function (req, res) {
-      var outFile = "morphOut.jpg";
+   this._sInst.get('/morph/morphIn.jpg', function (req, res) {
+      var outFile = "morphIn.jpg";
+      res.statusCode = 200;
       res.sendFile(__dirname +"/"+ outFile)
    });
 };
@@ -51,13 +53,13 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
 
       var ws = fs.createWriteStream("morphIn.jpg");
       req.pipe(ws);
-
       var t = Date.now();
-      _self._tAdapter.morph(morphType.DILATE, inFile, outFile, function () {
+      _self._tAdapter.morph(morphType.DILATE, inFile, inFile, function () {
          var elapsed = Date.now() - t;
-         console.log("sending file: " + (__dirname +"/"+ outFile));
+         console.log("sending file: " + (__dirname +"/"+ inFile));
 	      console.log("Morph dilate duration(ms): "+ elapsed);
-         res.sendFile(__dirname +"/"+ outFile)
+         res.statusCode = 200;
+         res.sendFile(__dirname +"/"+ inFile)
       });
    });
 };
@@ -69,6 +71,7 @@ OlServer.prototype.transcode = function (options) {
    this._sInst.post('/transcode', function (req, res) {
       var ws = fs.createWriteStream("image.jpg");
       req.pipe(ws);
+      res.sendStatus(200);
       res.send('Got a POST request');
    });
 };
