@@ -10,6 +10,8 @@ var morphType = require('./imageMagickAdapter').morphType;
 var fs = require('fs');
 var bp = require('body-parser');
 
+var IN_FILE = "morphIn.jpg";
+
 var OlServer = function (options) {
    this._sInst = express();
    this._tAdapter = new ImageMagickAdapter();
@@ -49,35 +51,80 @@ OlServer.prototype.morphOutEndpoint = function (options) {
    });
 };
 
+var _ts;
+OlServer.prototype._readIStream = function (req) {
+   var ws = fs.createWriteStream(IN_FILE);
+   req.pipe(ws);
+   _ts = Date.now();
+};
+
+OlServer.prototype._writeOStream = function (res) {
+   var elapsed = Date.now() - _ts;
+   var absPath = __dirname +"/"+ IN_FILE;
+   console.log("sending file: " + absPath);
+   console.log("Morph dilate duration(ms): "+ elapsed);
+   res.sendFile(absPath, {}, function (err) {
+      if (err) {
+         console.log("Error sending file: ", err);
+         res.status(err.status).end();
+      } else {
+         res.status(200);
+         console.log("File POST response complete.");
+      }
+   });
+};
+
 /**
  * @param options
  */
 OlServer.prototype.morphDilateEndPoint = function (options) {
    var _self = this;
+
    this._sInst.post('/morph/dilate', function (req, res) {
-      var inFile = "morphIn.jpg";
-      var outFile = "morphOut.jpg";
+      _self._readIStream(req);
+      _self._tAdapter.morph(morphType.DILATE, IN_FILE, IN_FILE, function () {
+         _self._writeOStream(res);
+      });
+   });
 
-      var ws = fs.createWriteStream("morphIn.jpg");
-      req.pipe(ws);
-      var t = Date.now();
+   this._sInst.post('/morph/erode', function (req, res) {
+      _self._readIStream(req);
+      _self._tAdapter.morph(morphType.ERODE, IN_FILE, IN_FILE, function () {
+         _self._writeOStream(res);
+      });
+   });
 
-      _self._tAdapter.morph(morphType.DILATE, inFile, inFile, function () {
-         var elapsed = Date.now() - t;
-         var absPath = __dirname +"/"+ inFile;
+   this._sInst.post('/morph/edge', function (req, res) {
+      _self._readIStream(req);
+      _self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
+         _self._writeOStream(res);
+      });
+   });
+};
 
-         console.log("sending file: " + absPath);
-	      console.log("Morph dilate duration(ms): "+ elapsed);
+/**
+ * @param options
+ */
+OlServer.prototype.transformEndpoint = function (options) {
+   var self = this;
+   this._sInst.post('/transform/spread', function (req, res) {
+      self._readIStream(req);
+      self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
+         self._writeOStream(res);
+      });
+   });
 
-         res.sendFile(absPath, options, function (err) {
-            if (err) {
-               console.log("Error sending file: ", err);
-               res.status(err.status).end();
-            } else {
-               res.status(200);
-               console.log("File POST response complete.");
-            }
-         });
+   this._sInst.post('/transform/vignette', function (req, res) {
+      self._readIStream(req);
+      self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
+         self._writeOStream(res);
+      });
+   });
+
+   this._sInst.post('/transform/charcoal', function (req, res) {
+      self._readIStream(req);
+      self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
+         self._writeOStream(res);
       });
    });
 };

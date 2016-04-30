@@ -31,7 +31,11 @@ ImageMagickAdapter.prototype.morph = function (type, inFile, outFile, cbfn) {
          cmd = "convert " + inFile + " -morphology Dilate Octagon:3 "+ outFile;
          break;
       case morphType.ERODE:
+         cmd = "convert " + inFile + " -morphology Erode Octagon:3 "+ outFile;
+         break;
       case morphType.EDGE:
+         cmd = "convert " + inFile + " -morphology Edge Octagon:3 "+ outFile;
+         break;
    }
 
    console.log("command line exec: " + cmd);
