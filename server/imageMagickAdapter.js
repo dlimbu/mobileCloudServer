@@ -50,7 +50,24 @@ ImageMagickAdapter.prototype.transform = function (type, inFile, outFile, cbfn) 
       throw Error("Invalid parameter, cbFn required");
    }
 
-   cbfn();
+   var cmd;
+   switch(type) {
+      case transformType.CHARCOAL:
+         cmd = "convert " + inFile + " -charcoal 1.0 "+ outFile;
+         break;
+      case transformType.SPREAD:
+         cmd = "convert " + inFile + " -spread 7.0 "+ outFile;
+         break;
+      case transformType.VIGNETTE:
+         cmd = "convert " + inFile + " -vignette +5+5 "+ outFile;
+         break;
+   }
+
+   console.log("command line exec: " + cmd);
+
+   exec(cmd ,function (error, stdout, stderr) {
+      cbfn();
+   });
 };
 
 var morphType = {
@@ -59,5 +76,12 @@ var morphType = {
    EDGE: "edge"
 };
 
+var transformType = {
+   SPREAD: "spread",
+   VIGNETTE: "vignette",
+   CHARCOAL: "charcoal"
+};
+
 exports.morphType = morphType;
+exports.transformType = transformType;
 exports.ImageMagickAdapter = ImageMagickAdapter;

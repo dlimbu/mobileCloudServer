@@ -6,6 +6,7 @@ var express = require('express');
 //var TranscoderAdapter = require('./transcoderAdapter').TranscoderAdapter;
 var ImageMagickAdapter = require('./imageMagickAdapter').ImageMagickAdapter;
 var morphType = require('./imageMagickAdapter').morphType;
+var transformType = require('./imageMagickAdapter').transformType;
 
 var fs = require('fs');
 var bp = require('body-parser');
@@ -102,28 +103,25 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
    });
 };
 
-/**
- * @param options
- */
-OlServer.prototype.transformEndpoint = function (options) {
+OlServer.prototype.transformEndpoint = function () {
    var self = this;
    this._sInst.post('/transform/spread', function (req, res) {
       self._readIStream(req);
-      self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
+      self._tAdapter.transform(transformType.SPREAD, IN_FILE, IN_FILE, function () {
          self._writeOStream(res);
       });
    });
 
    this._sInst.post('/transform/vignette', function (req, res) {
       self._readIStream(req);
-      self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
+      self._tAdapter.transform(transformType.VIGNETTE, IN_FILE, IN_FILE, function () {
          self._writeOStream(res);
       });
    });
 
    this._sInst.post('/transform/charcoal', function (req, res) {
       self._readIStream(req);
-      self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
+      self._tAdapter.transform(transformType.CHARCOAL, IN_FILE, IN_FILE, function () {
          self._writeOStream(res);
       });
    });
