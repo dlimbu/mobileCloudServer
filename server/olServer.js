@@ -16,8 +16,8 @@ var OlServer = function (options) {
 };
 
 OlServer.prototype.init = function () {
-   this._sInst.use(bp.json());
-   this._sInst.use(bp.urlencoded({extended:true}));
+   this._sInst.use(bp.json({limit: '50mb'}));
+   this._sInst.use(bp.urlencoded({limit: '50mb', extended: true}));
 };
 
 OlServer.prototype.transcodeEndpoint = function (options) {
