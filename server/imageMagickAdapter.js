@@ -16,6 +16,11 @@ ImageMagickAdapter.prototype.transcode = function (fileName, format, toFormat, c
       " ../myJava/"+fileName+"."+toFormat;
    console.log("command line exec: " + cmd);
    exec(cmd ,function (error, stdout, stderr) {
+
+      if (error) {
+         console.log("transcode error: ", error);
+      }
+
       cbfn();
    });
 };
@@ -41,6 +46,10 @@ ImageMagickAdapter.prototype.morph = function (type, inFile, outFile, cbfn) {
    console.log("command line exec: " + cmd);
 
    exec(cmd ,function (error, stdout, stderr) {
+      if (error) {
+         console.log("morph error: ", error);
+      }
+
       cbfn();
    });
 };
@@ -66,6 +75,10 @@ ImageMagickAdapter.prototype.transform = function (type, inFile, outFile, cbfn) 
    console.log("command line exec: " + cmd);
 
    exec(cmd ,function (error, stdout, stderr) {
+      if (error) {
+         console.log("transform error: ", error);
+      }
+
       cbfn();
    });
 };
