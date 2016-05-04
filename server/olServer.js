@@ -12,6 +12,7 @@ var fs = require('fs');
 var bp = require('body-parser');
 
 var IN_FILE = "morphIn.jpg";
+var _ts;
 
 var OlServer = function (options) {
    this._sInst = express();
@@ -23,36 +24,6 @@ OlServer.prototype.init = function () {
    this._sInst.use(bp.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000}));
 };
 
-OlServer.prototype.transcodeEndpoint = function (options) {
-   var _self = this;
-   this._sInst.get('/', function (req, res) {
-      console.log("get received calling transcode");
-      var t = Date.now();
-      _self._tAdapter.transcode("mirage", "png", "jpg", function (result) {
-         var elapsed = Date.now() - t;
-         res.send('Welcome to Offload Server! duration transcoding (MS): '+ elapsed)
-      }.bind(this));
-   });
-};
-
-OlServer.prototype.morphOutEndpoint = function (options) {
-   var _self = this;
-   this._sInst.get('/morph/morphIn.jpg', function (req, res) {
-      var outFile = "morphIn.jpg";
-
-      res.sendFile(__dirname +"/"+ outFile, options, function (err) {
-         if (err) {
-            console.log("Error sending file: ", err);
-            res.status(err.status).end();
-         } else {
-            res.status(200);
-            console.log("File GET response complete.");
-         }
-      });
-   });
-};
-
-var _ts;
 OlServer.prototype._readIStream = function (req) {
    var ws = fs.createWriteStream(IN_FILE);
    req.pipe(ws);
@@ -75,7 +46,41 @@ OlServer.prototype._writeOStream = function (res) {
    });
 };
 
+OlServer.prototype.transcodeEndpoint = function (options) {
+   var _self = this;
+   this._sInst.get('/', function (req, res) {
+      console.log("get received calling transcode");
+      var t = Date.now();
+      _self._tAdapter.transcode("mirage", "png", "jpg", function (result) {
+         var elapsed = Date.now() - t;
+         res.send('Welcome to Offload Server! duration transcoding (MS): '+ elapsed)
+      }.bind(this));
+   });
+};
+
 /**
+ * Morph out GET endpoint for last processed image.
+ * @param options
+ */
+OlServer.prototype.morphOutEndpoint = function (options) {
+   var _self = this;
+   this._sInst.get('/morph/morphIn.jpg', function (req, res) {
+      var outFile = "morphIn.jpg";
+
+      res.sendFile(__dirname +"/"+ outFile, options, function (err) {
+         if (err) {
+            console.log("Error sending file: ", err);
+            res.status(err.status).end();
+         } else {
+            res.status(200);
+            console.log("File GET response complete.");
+         }
+      });
+   });
+};
+
+/**
+ * Morph dilate POST end point
  * @param options
  */
 OlServer.prototype.morphDilateEndPoint = function (options) {
@@ -103,6 +108,9 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
    });
 };
 
+/**
+ * Transform POST end point.
+ */
 OlServer.prototype.transformEndpoint = function () {
    var self = this;
    this._sInst.post('/transform/spread', function (req, res) {
@@ -135,7 +143,6 @@ OlServer.prototype.transcode = function (options) {
       var ws = fs.createWriteStream("image.jpg");
       req.pipe(ws);
       res.sendStatus(200);
-      res.send('Got a POST request');
    });
 };
 
