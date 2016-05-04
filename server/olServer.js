@@ -65,6 +65,7 @@ OlServer.prototype.GETDurationEndpoint = function (options) {
    var _self = this;
    this._sInst.get('/durations', function (req, res) {
       res.setHeader("Content-Type", "application/json");
+      _serverDurations.total = _serverDurations.procTime.length;
       res.send(JSON.stringify(_serverDurations));
       _i = -1;
    });
