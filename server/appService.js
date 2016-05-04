@@ -13,4 +13,5 @@ olServer.transcodeEndpoint();
 olServer.morphDilateEndPoint();
 olServer.morphOutEndpoint();
 olServer.transformEndpoint();
+olServer.GETDurationEndpoint();
 olServer.start(8080);

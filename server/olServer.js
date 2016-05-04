@@ -13,6 +13,8 @@ var bp = require('body-parser');
 
 var IN_FILE = "morphIn.jpg";
 var _ts;
+var _i = 0;
+var _serverDurations = { procTime: [] };
 
 var OlServer = function (options) {
    this._sInst = express();
@@ -32,6 +34,7 @@ OlServer.prototype._readIStream = function (req) {
 
 OlServer.prototype._writeOStream = function (res) {
    var elapsed = Date.now() - _ts;
+   _serverDurations.procTime[_i++] = elapsed;
    var absPath = __dirname +"/"+ IN_FILE;
    console.log("sending file: " + absPath);
    console.log("Morph dilate duration(ms): "+ elapsed);
@@ -55,6 +58,16 @@ OlServer.prototype.transcodeEndpoint = function (options) {
          var elapsed = Date.now() - t;
          res.send('Welcome to Offload Server! duration transcoding (MS): '+ elapsed)
       }.bind(this));
+   });
+};
+
+OlServer.prototype.GETDurationEndpoint = function (options) {
+   var _self = this;
+   this._sInst.get('/durations', function (req, res) {
+      res.setHeader("Content-Type", "application/json");
+      res.send(JSON.stringify(_serverDurations));
+      _serverDurations = {procTime: []};
+      _i = 0;
    });
 };
 
