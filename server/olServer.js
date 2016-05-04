@@ -66,8 +66,7 @@ OlServer.prototype.GETDurationEndpoint = function (options) {
    this._sInst.get('/durations', function (req, res) {
       res.setHeader("Content-Type", "application/json");
       res.send(JSON.stringify(_serverDurations));
-      _serverDurations = {procTime: []};
-      _i = 0;
+      _i = -1;
    });
 };
 
@@ -92,6 +91,13 @@ OlServer.prototype.morphOutEndpoint = function (options) {
    });
 };
 
+var _resetDurationTrack = function () {
+   if (_i == -1) {
+      _i = 0;
+      _serverDurations = {procTime:[]};
+   }
+};
+
 /**
  * Morph dilate POST end point
  * @param options
@@ -100,6 +106,7 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
    var _self = this;
 
    this._sInst.post('/morph/dilate', function (req, res) {
+      _resetDurationTrack();
       _self._readIStream(req);
       _self._tAdapter.morph(morphType.DILATE, IN_FILE, IN_FILE, function () {
          _self._writeOStream(res);
@@ -107,6 +114,7 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
    });
 
    this._sInst.post('/morph/erode', function (req, res) {
+      _resetDurationTrack();
       _self._readIStream(req);
       _self._tAdapter.morph(morphType.ERODE, IN_FILE, IN_FILE, function () {
          _self._writeOStream(res);
@@ -114,6 +122,7 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
    });
 
    this._sInst.post('/morph/edge', function (req, res) {
+      _resetDurationTrack();
       _self._readIStream(req);
       _self._tAdapter.morph(morphType.EDGE, IN_FILE, IN_FILE, function () {
          _self._writeOStream(res);
@@ -127,6 +136,7 @@ OlServer.prototype.morphDilateEndPoint = function (options) {
 OlServer.prototype.transformEndpoint = function () {
    var self = this;
    this._sInst.post('/transform/spread', function (req, res) {
+      _resetDurationTrack();
       self._readIStream(req);
       self._tAdapter.transform(transformType.SPREAD, IN_FILE, IN_FILE, function () {
          self._writeOStream(res);
@@ -134,6 +144,7 @@ OlServer.prototype.transformEndpoint = function () {
    });
 
    this._sInst.post('/transform/vignette', function (req, res) {
+      _resetDurationTrack();
       self._readIStream(req);
       self._tAdapter.transform(transformType.VIGNETTE, IN_FILE, IN_FILE, function () {
          self._writeOStream(res);
@@ -141,6 +152,7 @@ OlServer.prototype.transformEndpoint = function () {
    });
 
    this._sInst.post('/transform/charcoal', function (req, res) {
+      _resetDurationTrack();
       self._readIStream(req);
       self._tAdapter.transform(transformType.CHARCOAL, IN_FILE, IN_FILE, function () {
          self._writeOStream(res);
