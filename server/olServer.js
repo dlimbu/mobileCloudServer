@@ -38,6 +38,7 @@ OlServer.prototype._writeOStream = function (res) {
    var absPath = __dirname +"/"+ IN_FILE;
    console.log("sending file: " + absPath);
    console.log("Morph dilate duration(ms): "+ elapsed);
+
    res.sendFile(absPath, {}, function (err) {
       if (err) {
          console.log("Error sending file: ", err);
@@ -65,7 +66,7 @@ OlServer.prototype.GETDurationEndpoint = function (options) {
    var _self = this;
    this._sInst.get('/durations', function (req, res) {
       res.setHeader("Content-Type", "application/json");
-      _serverDurations.total = _serverDurations.procTime.length;
+      _serverDurations.total = [_serverDurations.procTime.length];
       res.send(JSON.stringify(_serverDurations));
       _i = -1;
    });
