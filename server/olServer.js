@@ -38,7 +38,6 @@ OlServer.prototype._writeOStream = function (res) {
    var absPath = __dirname +"/"+ IN_FILE;
    console.log("sending file: " + absPath);
    console.log("Morph dilate duration(ms): "+ elapsed);
-
    res.sendFile(absPath, {}, function (err) {
       if (err) {
          console.log("Error sending file: ", err);
