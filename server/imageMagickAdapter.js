@@ -62,7 +62,7 @@ ImageMagickAdapter.prototype.transform = function (type, inFile, outFile, cbfn) 
    var cmd;
    switch(type) {
       case transformType.CHARCOAL:
-         cmd = "convert " + inFile + " -charcoal 1.0 "+ outFile;
+         cmd = "convert " + inFile + " -charcoal 0.0 "+ outFile;
          break;
       case transformType.SPREAD:
          cmd = "convert " + inFile + " -spread 7.0 "+ outFile;
