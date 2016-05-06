@@ -35,6 +35,7 @@ OlServer.prototype._readIStream = function (req) {
 OlServer.prototype._writeOStream = function (res) {
    var elapsed = Date.now() - _ts;
    _serverDurations.procTime[_i++] = elapsed;
+   console.log("ServerDuration sequence number: (" + _i + ").");
    var absPath = __dirname +"/"+ IN_FILE;
    console.log("sending file: " + absPath);
    console.log("Morph dilate duration(ms): "+ elapsed);
