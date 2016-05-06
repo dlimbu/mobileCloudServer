@@ -39,13 +39,15 @@ OlServer.prototype._writeOStream = function (res) {
    var absPath = __dirname +"/"+ IN_FILE;
    console.log("sending file: " + absPath);
    console.log("Morph dilate duration(ms): "+ elapsed);
+   var t = Date.now();
    res.sendFile(absPath, {}, function (err) {
       if (err) {
          console.log("Error sending file: ", err);
          res.status(err.status).end();
       } else {
          res.status(200);
-         console.log("File POST response complete.");
+         
+         console.log("File POST response complete duration: "+ (Date.now() - t));
       }
    });
 };
