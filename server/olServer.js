@@ -42,11 +42,16 @@ OlServer.prototype._writeOStream = function (res) {
    var t = Date.now();
    res.sendFile(absPath, {}, function (err) {
       if (err) {
+         console.log("Error sending file: ", res.statusCode);
+         if (err.code === "ECONNABORT") {
+            console.log('304 cache hit');
+            return;
+         }
+
          console.log("Error sending file: ", err);
          res.status(err.status).end();
       } else {
          res.status(200);
-         
          console.log("File POST response complete duration: "+ (Date.now() - t));
       }
    });
@@ -91,6 +96,7 @@ OlServer.prototype.morphOutEndpoint = function (options) {
             res.status(200);
             console.log("File GET response complete.");
          }
+         next();
       });
    });
 };
