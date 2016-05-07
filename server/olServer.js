@@ -43,8 +43,9 @@ OlServer.prototype._writeOStream = function (res) {
    res.sendFile(absPath, {}, function (err) {
       if (err) {
          console.log("Error sending file: ", res.statusCode);
-         if (err.code === "ECONNABORT") {
-            console.log('304 cache hit');
+         console.log("Error sending file error: ", err);
+         if (err.code === "ECONNABORTED") {
+            console.log('CONN ABORTED!!');
             return;
          }
 
