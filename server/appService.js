@@ -4,6 +4,10 @@
 
 //const nativeHello = require('../build/Release/hello');
 //console.log("NativeHello: " + nativeHello.hello());
+var fs = require('fs');
+process.env.UV_THREADPOOL_SIZE = 80;
+console.log("POOL SIZE: "+process.env.UV_THREADPOOL_SIZE);
+
 var OlServer = require('./olServer').OlServer;
 
 var olServer = new OlServer();
